@@ -10,30 +10,9 @@
 </head>
 <body class="multiple-scenes ">
 
-<!-- Jelszókérő overlay -->
-<div id="passwordOverlay" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 1000;
-">
-  <h2>Kérlek, add meg a jelszót!</h2>
-  <input type="password" id="passwordInput" placeholder="Jelszó" style="padding: 10px; font-size: 16px; margin-bottom: 10px;">
-  <button onclick="checkPassword()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Belépés</button>
-  <p id="errorMessage" style="color: red; display: none;">Hibás jelszó!</p>
-</div>
+<div id="pano"></div>
 
-<div id="pano" style="display: none;"></div>
-
-<div id="sceneList" style="display: none;">
+<div id="sceneList">
   <ul class="scenes">
     
       <a href="javascript:void(0)" class="scene" data-id="0-1">
@@ -55,41 +34,41 @@
   </ul>
 </div>
 
-<div id="titleBar" style="display: none;">
+<div id="titleBar">
   <h1 class="sceneName"></h1>
 </div>
 
-<a href="javascript:void(0)" id="autorotateToggle" style="display: none;">
+<a href="javascript:void(0)" id="autorotateToggle">
   <img class="icon off" src="img/play.png">
   <img class="icon on" src="img/pause.png">
 </a>
 
-<a href="javascript:void(0)" id="fullscreenToggle" style="display: none;">
+<a href="javascript:void(0)" id="fullscreenToggle">
   <img class="icon off" src="img/fullscreen.png">
   <img class="icon on" src="img/windowed.png">
 </a>
 
-<a href="javascript:void(0)" id="sceneListToggle" style="display: none;">
+<a href="javascript:void(0)" id="sceneListToggle">
   <img class="icon off" src="img/expand.png">
   <img class="icon on" src="img/collapse.png">
 </a>
 
-<a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1" style="display: none;">
+<a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1">
   <img class="icon" src="img/up.png">
 </a>
-<a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2" style="display: none;">
+<a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2">
   <img class="icon" src="img/down.png">
 </a>
-<a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3" style="display: none;">
+<a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3">
   <img class="icon" src="img/left.png">
 </a>
-<a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4" style="display: none;">
+<a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4">
   <img class="icon" src="img/right.png">
 </a>
-<a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5" style="display: none;">
+<a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5">
   <img class="icon" src="img/plus.png">
 </a>
-<a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6" style="display: none;">
+<a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6">
   <img class="icon" src="img/minus.png">
 </a>
 
@@ -99,31 +78,6 @@
 
 <script src="data.js"></script>
 <script src="index.js"></script>
-
-<script>
-// Jelszó ellenőrzése
-function checkPassword() {
-  const correctPassword = "yourpassword"; // Cseréld ki a megfelelő jelszóra
-  const userPassword = document.getElementById("passwordInput").value;
-  const errorMessage = document.getElementById("errorMessage");
-
-  if (userPassword === correctPassword) {
-    // Jelszó helyes, elrejti az overlay-t és megjeleníti a panorámaképeket
-    document.getElementById("passwordOverlay").style.display = "none";
-    document.getElementById("pano").style.display = "block";
-    document.getElementById("sceneList").style.display = "block";
-    document.getElementById("titleBar").style.display = "block";
-    document.getElementById("autorotateToggle").style.display = "inline-block";
-    document.getElementById("fullscreenToggle").style.display = "inline-block";
-    document.getElementById("sceneListToggle").style.display = "inline-block";
-    const viewControls = document.querySelectorAll(".viewControlButton");
-    viewControls.forEach(button => button.style.display = "inline-block");
-  } else {
-    // Hibás jelszó
-    errorMessage.style.display = "block";
-  }
-}
-</script>
 
 </body>
 </html>
