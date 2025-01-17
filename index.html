@@ -10,7 +10,6 @@
 </head>
 <body class="multiple-scenes ">
 
-<!-- Jelszókérő overlay -->
 <div id="passwordOverlay" style="
     position: fixed;
     top: 0;
@@ -96,7 +95,7 @@
 <script src="vendor/screenfull.min.js" ></script>
 <script src="vendor/bowser.min.js" ></script>
 <script src="vendor/marzipano.js" ></script>
-<script src="hash.js"></script> <!-- A külön fájl a jelszó hash értékével -->
+<script src="hash.js"></script>
 <script src="data.js"></script>
 <script src="index.js"></script>
 
@@ -107,7 +106,6 @@ function checkPassword() {
   const userPassword = document.getElementById("passwordInput").value;
   const errorMessage = document.getElementById("errorMessage");
 
-  // SHA-256 hash összehasonlítása
   const encoder = new TextEncoder();
   crypto.subtle.digest("SHA-256", encoder.encode(userPassword)).then(hashBuffer => {
     const hashArray = Array.from(new Uint8Array(hashBuffer));
