@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gömbpanoráma Nézegető</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <button id="prev">Előző</button>
+        <button id="next">Következő</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r155/three.min.js"></script>
+    <script>
+        let scene, camera, renderer, sphere, currentImage = 0;
+        const images = ['./images/1.jpg', './images/2.jpg', './images/3.jpg', './images/4.jpg'];
+
+        function init() {
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 0.1);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            const geometry = new THREE.SphereGeometry(500, 60, 40);
+            geometry.scale(-1, 1, 1); // Invert the sphere to view from inside
+
+            const texture = new THREE.TextureLoader().load(images[currentImage]);
+            const material = new THREE.MeshBasicMaterial({ map: texture });
+            sphere = new THREE.Mesh(geometry, material);
+            scene.add(sphere);
+
+            document.getElementById('prev').addEventListener('click', showPreviousImage);
+            document.getElementById('next').addEventListener('click', showNextImage);
+
+            animate();
+        }
+
+        function showPreviousImage() {
+            currentImage = (currentImage - 1 + images.length) % images.length;
+            updateTexture();
+        }
+
+        function showNextImage() {
+            currentImage = (currentImage + 1) % images.length;
+            updateTexture();
+        }
+
+        function updateTexture() {
+            const texture = new THREE.TextureLoader().load(images[currentImage]);
+            sphere.material.map = texture;
+            sphere.material.needsUpdate = true;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        init();
+    </script>
+</body>
+</html>
