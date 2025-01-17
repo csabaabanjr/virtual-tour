@@ -24,10 +24,10 @@
     flex-direction: column;
     z-index: 1000;
 ">
-  <h2>Please enter the password!</h2>
+  <h2>Please, enter the password!</h2>
   <input type="password" id="passwordInput" placeholder="Password" style="padding: 10px; font-size: 16px; margin-bottom: 10px;">
   <button onclick="checkPassword()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Login</button>
-  <p id="errorMessage" style="color: red; display: none;">Wrong password!</p>
+  <p id="errorMessage" style="color: red; display: none;">Wrong password, please try again!</p>
 </div>
 
 <div id="pano" style="display: none;"></div>
@@ -95,12 +95,11 @@
 <script src="vendor/screenfull.min.js" ></script>
 <script src="vendor/bowser.min.js" ></script>
 <script src="vendor/marzipano.js" ></script>
-<script src="hash.js"></script>
 <script src="data.js"></script>
 <script src="index.js"></script>
 
 <script>
-const hashedPassword = window.hashedPassword;
+const hashedPassword = "554c8f943d889db43c75e34c9dbec6e46001794528e8e292b3fdac7aa07c08bf";
 
 function checkPassword() {
   const userPassword = document.getElementById("passwordInput").value;
