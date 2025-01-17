@@ -10,9 +10,30 @@
 </head>
 <body class="multiple-scenes ">
 
-<div id="pano"></div>
+<!-- Jelszókérő overlay -->
+<div id="passwordOverlay" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+">
+  <h2>Please enter the password!</h2>
+  <input type="password" id="passwordInput" placeholder="Password" style="padding: 10px; font-size: 16px; margin-bottom: 10px;">
+  <button onclick="checkPassword()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Login</button>
+  <p id="errorMessage" style="color: red; display: none;">Wrong password!</p>
+</div>
 
-<div id="sceneList">
+<div id="pano" style="display: none;"></div>
+
+<div id="sceneList" style="display: none;">
   <ul class="scenes">
     
       <a href="javascript:void(0)" class="scene" data-id="0-1">
@@ -34,50 +55,80 @@
   </ul>
 </div>
 
-<div id="titleBar">
+<div id="titleBar" style="display: none;">
   <h1 class="sceneName"></h1>
 </div>
 
-<a href="javascript:void(0)" id="autorotateToggle">
+<a href="javascript:void(0)" id="autorotateToggle" style="display: none;">
   <img class="icon off" src="img/play.png">
   <img class="icon on" src="img/pause.png">
 </a>
 
-<a href="javascript:void(0)" id="fullscreenToggle">
+<a href="javascript:void(0)" id="fullscreenToggle" style="display: none;">
   <img class="icon off" src="img/fullscreen.png">
   <img class="icon on" src="img/windowed.png">
 </a>
 
-<a href="javascript:void(0)" id="sceneListToggle">
+<a href="javascript:void(0)" id="sceneListToggle" style="display: none;">
   <img class="icon off" src="img/expand.png">
   <img class="icon on" src="img/collapse.png">
 </a>
 
-<a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1">
+<a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1" style="display: none;">
   <img class="icon" src="img/up.png">
 </a>
-<a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2">
+<a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2" style="display: none;">
   <img class="icon" src="img/down.png">
 </a>
-<a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3">
+<a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3" style="display: none;">
   <img class="icon" src="img/left.png">
 </a>
-<a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4">
+<a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4" style="display: none;">
   <img class="icon" src="img/right.png">
 </a>
-<a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5">
+<a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5" style="display: none;">
   <img class="icon" src="img/plus.png">
 </a>
-<a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6">
+<a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6" style="display: none;">
   <img class="icon" src="img/minus.png">
 </a>
 
 <script src="vendor/screenfull.min.js" ></script>
 <script src="vendor/bowser.min.js" ></script>
 <script src="vendor/marzipano.js" ></script>
-
+<script src="hash.js"></script> <!-- A külön fájl a jelszó hash értékével -->
 <script src="data.js"></script>
 <script src="index.js"></script>
+
+<script>
+const hashedPassword = window.hashedPassword;
+
+function checkPassword() {
+  const userPassword = document.getElementById("passwordInput").value;
+  const errorMessage = document.getElementById("errorMessage");
+
+  // SHA-256 hash összehasonlítása
+  const encoder = new TextEncoder();
+  crypto.subtle.digest("SHA-256", encoder.encode(userPassword)).then(hashBuffer => {
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    
+    if (hashHex === hashedPassword) {
+      document.getElementById("passwordOverlay").style.display = "none";
+      document.getElementById("pano").style.display = "block";
+      document.getElementById("sceneList").style.display = "block";
+      document.getElementById("titleBar").style.display = "block";
+      document.getElementById("autorotateToggle").style.display = "inline-block";
+      document.getElementById("fullscreenToggle").style.display = "inline-block";
+      document.getElementById("sceneListToggle").style.display = "inline-block";
+      const viewControls = document.querySelectorAll(".viewControlButton");
+      viewControls.forEach(button => button.style.display = "inline-block");
+    } else {
+      errorMessage.style.display = "block";
+    }
+  });
+}
+</script>
 
 </body>
 </html>
